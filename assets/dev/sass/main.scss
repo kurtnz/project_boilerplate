@@ -5,4 +5,14 @@
 @import "modules/variables";
 @import "modules/mixins";
 @import "modules/type";
-@import "modules/unsemantic-grid-responsive";
+@import "modules/grid";
+// @import "modules/unsemantic-grid-responsive";
+
+
+
+main {
+	background:red;
+	margin:0 auto;
+	@include grid;
+	@include gridMakeColumns(3, $mq-min-small);
+}

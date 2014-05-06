@@ -25,8 +25,7 @@ module.exports = function(grunt) {
     concat: {
       options: {
         stripBanners: true,
-        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-          '<%= grunt.template.today("yyyy-mm-dd") %> */'
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' + '<%= grunt.template.today("yyyy-mm-dd") %> */'
       },
       dist: {
         src: [
@@ -41,7 +40,8 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         options: {
-          style: 'compressed'
+          style: 'compressed',
+          sourcemap: true
         },
         files: {
           'assets/dist/css/main.min.css': 'assets/dev/sass/main.scss'
@@ -76,8 +76,8 @@ module.exports = function(grunt) {
         }
       },
       css: {
-        files: ['assets/dev/**/*.scss'],
-        tasks: 'sass',
+        files: ['assets/**/*.scss'],
+        tasks: ['sass', 'autoprefixer', 'cmq'],
         options: {
           livereload: true,
         }
@@ -85,7 +85,6 @@ module.exports = function(grunt) {
     },
 
 
-    // Copy bower modules across
     copy: {
       main: {
         files: [
@@ -101,6 +100,18 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+
+
+    cmq: {
+      options: {
+        log: true
+      },
+      target: {
+        files: {
+          'assets/dist/css': ['assets/dist/css/main.min.css']
+        }
+      }
     }
 
 
@@ -111,12 +122,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-sass');
-  // grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-combine-media-queries');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'concat', 'sass', 'uglify', 'autoprefixer']);
+  grunt.registerTask('default', ['jshint', 'concat', 'sass', 'uglify', 'autoprefixer', 'cmq']);
 
 };
